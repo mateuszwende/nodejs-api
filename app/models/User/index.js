@@ -1,53 +1,51 @@
-"use strict";
-const debug = require("debug")("model-user");
-const { Schema, model } = require("mongoose");
-const { validateEmail, validatePassword } = require("./validate");
-const bcrypt = require("bcrypt");
+const { Schema, model } = require('mongoose');
+const bcrypt = require('bcrypt');
+const { validateEmail, validatePassword } = require('./validate');
 
 const UserSchema = new Schema(
   {
     methods: {
       type: [String],
-      required: true
+      required: true,
     },
     email: {
       type: String,
       unique: true,
-      required: [true, "Email is required"],
+      required: [true, 'Email is required'],
       validate: {
         validator: validateEmail,
-        message: "The email is not valid"
-      }
+        message: 'The email is not valid',
+      },
     },
     password: {
       type: String,
-      required: [true, "Password is required"],
+      required: [true, 'Password is required'],
       validate: {
         validator: validatePassword,
-        message: "The password is not valid"
-      }
+        message: 'The password is not valid',
+      },
     },
     emailToken: String,
     isVerified: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   {
     timestamps: {
-      createdAt: "created_at",
-      updatedAt: "updated_at"
-    }
-  }
+      createdAt: 'created_at',
+      updatedAt: 'updated_at',
+    },
+  },
 );
 
-UserSchema.pre("save", async function(next) {
+UserSchema.pre('save', async function (next) {
   try {
-    if (!this.methods.includes("local")) {
+    if (!this.methods.includes('local')) {
       next();
     }
-    //check if the user has been modified to know if the password has already been hashed
-    if (!this.isModified("password")) {
+    // check if the user has been modified to know if the password has already been hashed
+    if (!this.isModified('password')) {
       next();
     }
 
@@ -60,21 +58,21 @@ UserSchema.pre("save", async function(next) {
   }
 });
 
-UserSchema.methods.hashPassword = async password => {
+UserSchema.methods.hashPassword = async (password) => {
   try {
     const salt = await bcrypt.genSalt(10);
     return await bcrypt.hash(password, salt);
   } catch (err) {
-    throw new Error("Password hashing failed", err);
+    throw new Error('Password hashing failed', err);
   }
 };
 
-UserSchema.methods.checkPassword = async function(inputPass) {
+UserSchema.methods.checkPassword = async function (inputPass) {
   try {
     return await bcrypt.compare(inputPass, this.password);
   } catch (err) {
-    throw new Error("Passwords comparing failed", err);
+    throw new Error('Passwords comparing failed', err);
   }
 };
 
-module.exports = model("User", UserSchema);
+module.exports = model('User', UserSchema);

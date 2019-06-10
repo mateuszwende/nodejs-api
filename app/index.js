@@ -1,15 +1,16 @@
-"use strict";
+require('dotenv').config();
+const debug = require('debug')('app-index');
+const express = require('express');
+const bodyParser = require('body-parser');
+const helmet = require('helmet');
+const logger = require('morgan');
 
-require("dotenv").config();
-const express = require("express");
-const bodyParser = require("body-parser");
-const helmet = require("helmet");
-const logger = require("morgan");
+const cors = require('cors');
+const db = require('./db');
+const apiRoutes = require('./routes');
+const errorHandler = require('./middlewares/error-handler');
+const passportConfig = require('./middlewares/auth');
 
-const cors = require("cors");
-const db = require("./db");
-const apiRoutes = require("./routes");
-const errorHandler = require("./middlewares/error-handler");
 // const i18n = require('i18n');
 // const i18nConfigure = require('../config/lang');
 // i18nConfigure();
@@ -17,9 +18,9 @@ const errorHandler = require("./middlewares/error-handler");
 const app = express();
 
 // Connect to mongo.
-db.connect().catch(err => {
-  throw err;
-});
+db.connect()
+  .then(res => debug('Database connected successfully!'))
+  .catch(err => debug(err));
 
 app.use(helmet());
 app.use(cors());
@@ -28,12 +29,15 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+// Init the passport middleware strategies
+passportConfig.init();
+
 // Mount API routes
-app.use("/api", apiRoutes);
+app.use('/api', apiRoutes);
 
 // server.use(i18n.init);
-if (process.env.NODE_ENV !== "test") {
-  app.use(logger("dev"));
+if (process.env.NODE_ENV !== 'test') {
+  app.use(logger('dev'));
 }
 
 // Handle any errors

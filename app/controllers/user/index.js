@@ -1,18 +1,16 @@
-"use strict";
+const { UserService } = require('../../services');
+// const { sendMailService } = require('../../services/mailer');
+const authService = require('../../services/auth');
 
-const { UserService } = require("../../services");
-const { sendMailService } = require("../../services/mailer");
-const authService = require("../../services/auth");
-
-const ApiResult = require("../../utils/ApiResult");
-const commonErrors = require("../../utils/errors/common");
+const ApiResult = require('../../utils/ApiResult');
+const commonErrors = require('../../utils/errors/common');
 
 module.exports = {
   register: async (email, password) => {
     const user = await UserService.getByEmail(email);
 
     if (user) {
-      throw commonErrors.alreadyExists("User");
+      throw commonErrors.alreadyExists('User');
     }
 
     const newUser = await UserService.create(email, password);
@@ -41,9 +39,11 @@ module.exports = {
     return new ApiResult({ newUser, jwtToken }, 201);
   },
 
-  login: async user => {
+  login: async (user) => {
+    console.log('login user', user);
+
     if (!user) {
-      throw commonErrors.notFound("User");
+      throw commonErrors.notFound('User');
     }
 
     const token = await authService.jwtSign(user);
@@ -51,21 +51,19 @@ module.exports = {
     return new ApiResult({ token }, 200);
   },
 
-  logout: async () => {
-    return new ApiResult(null, 200);
-  },
+  logout: async () => new ApiResult(null, 200),
 
-  verifyEmail: async token => {
+  verifyEmail: async (token) => {
     if (!token) {
-      throw commonErrors.notProvided("Token");
+      throw commonErrors.notProvided('Token');
     }
 
     const user = await UserService.verifyEmail(token);
 
     if (!user) {
-      throw commonErrors.notFound("User");
+      throw commonErrors.notFound('User');
     } else if (user.isVerified) {
-      throw commonErrors.alreadyVerified("User");
+      throw commonErrors.alreadyVerified('User');
     }
 
     user.isVerified = true;
@@ -79,11 +77,11 @@ module.exports = {
     return new ApiResult(users, 200);
   },
 
-  getOne: async id => {
+  getOne: async (id) => {
     const user = await UserService.getById(id);
 
     if (!user) {
-      throw commonErrors.notFound("User");
+      throw commonErrors.notFound('User');
     }
 
     return new ApiResult(user, 200);
@@ -93,11 +91,11 @@ module.exports = {
     const user = await UserService.getById(id);
 
     if (!user) {
-      throw commonErrors.notFound("User");
+      throw commonErrors.notFound('User');
     }
 
     // // TODO: Change to function
-    Object.keys(params).forEach(param => {
+    Object.keys(params).forEach((param) => {
       user[param] = params[param];
     });
 
@@ -106,13 +104,13 @@ module.exports = {
     return new ApiResult(updatedUser, 200);
   },
 
-  delete: async id => {
+  delete: async (id) => {
     const success = await UserService.delete(id);
 
     if (!success) {
-      throw commonErrors.deleteFail("User");
+      throw commonErrors.deleteFail('User');
     }
 
     return new ApiResult(null, 200);
-  }
+  },
 };

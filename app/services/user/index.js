@@ -1,41 +1,24 @@
-"use strict";
-const User = require("../../models/User");
-const randomstring = require("randomstring");
+const randomstring = require('randomstring');
+const User = require('../../models/User');
 
 module.exports = {
-  getAll: () => {
-    return User.find({}).exec();
-  },
+  getAll: () => User.find({}).exec(),
 
-  getByEmail: email => {
-    return User.findOne({ email: email }).exec();
-  },
+  getByEmail: email => User.findOne({ email }).exec(),
 
-  getById: id => {
-    return User.findById(id).exec();
-  },
+  getById: id => User.findById(id).exec(),
 
-  create: (email, password) => {
-    return new User({
-      methods: ["local"],
-      email: email,
-      password: password
-    });
-  },
+  create: (email, password) => new User({
+    methods: ['local'],
+    email,
+    password,
+  }),
 
-  save: user => {
-    return user.save();
-  },
+  save: user => user.save(),
 
-  verifyEmail: token => {
-    return User.findOne({ emailToken: token }).exec();
-  },
+  verifyEmail: token => User.findOne({ emailToken: token }).exec(),
 
-  delete: async id => {
-    return User.findByIdAndDelete(id).exec();
-  },
+  delete: async id => User.findByIdAndDelete(id).exec(),
 
-  generateEmailToken: () => {
-    return randomstring.generate();
-  }
+  generateEmailToken: () => randomstring.generate(),
 };

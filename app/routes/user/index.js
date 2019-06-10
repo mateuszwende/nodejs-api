@@ -1,37 +1,33 @@
-"use strict";
+const express = require('express');
+const passport = require('passport');
 
-const express = require("express");
-const UserController = require("../../controllers/user");
-const { controllerHandler } = require("../../middlewares/controller-handler");
+const UserController = require('../../controllers/user');
+const { controllerHandler } = require('../../middlewares/controller-handler');
+
 const c = controllerHandler;
 
-const passport = require("passport");
-const passportConf = require("../../services/auth/passport");
-const passportUsersLocal = passport.authenticate("local-users", {
-  session: false
+const passportUsersLocal = passport.authenticate('local-users', {
+  session: false,
 });
-const passportUsersJWT = passport.authenticate("jwt-users", { session: false });
+const passportUsersJWT = passport.authenticate('jwt-users', { session: false });
 
-let router = express.Router();
+const router = express.Router();
 
 router.post(
-  "/users/register",
-  c(UserController.register, (req, res, next) => [
-    req.body.email,
-    req.body.password
-  ])
+  '/users/register',
+  c(UserController.register, (req, res, next) => [req.body.email, req.body.password]),
 );
 
 router.post(
-  "/users/login",
+  '/users/login',
   passportUsersLocal,
-  c(UserController.login, (req, res, next) => [req.user])
+  c(UserController.login, (req, res, next) => [req.user]),
 );
 
 router.post(
-  "/users/logout",
+  '/users/logout',
   passportUsersJWT,
-  c(UserController.logout, (req, res, next) => [req.params.id])
+  c(UserController.logout, (req, res, next) => [req.params.id]),
 );
 
 // router.post(
@@ -46,27 +42,18 @@ router.post(
 //   UserController.facebookOAuth
 // );
 
-router.get(
-  "/users/verify",
-  c(UserController.verifyEmail, (req, res, next) => [req.query.token])
-);
+router.get('/users/verify', c(UserController.verifyEmail, (req, res, next) => [req.query.token]));
 
-router.get("/users", c(UserController.getAll));
+router.get('/users', c(UserController.getAll));
 
-router.get(
-  "/users/:id",
-
-  c(UserController.getOne, (req, res, next) => [req.params.id])
-);
+router.get('/users/:id', c(UserController.getOne, (req, res, next) => [req.params.id]));
 
 router.put(
-  "/users/update/:id",
-  c(UserController.update, (req, res, next) => [req.params.id, req.body.params])
+  '/users/update/:id',
+  c(UserController.update, (req, res, next) => [req.params.id, req.body.params]),
 );
 
-router.post(
-  "/users/delete/:id",
-  c(UserController.delete, (req, res, next) => [req.params.id])
-);
+router.post('/users/delete/:id', c(UserController.delete, (req, res, next) => [req.params.id]));
+// eslint-disable-line no-unused-vars
 
 module.exports = router;

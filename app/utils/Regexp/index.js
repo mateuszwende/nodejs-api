@@ -15,5 +15,5 @@ module.exports = {
   emailRegex,
   phoneNumberRegex,
   priceRegex,
-  passwordRegex
+  passwordRegex,
 };

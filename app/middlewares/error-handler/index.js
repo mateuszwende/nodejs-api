@@ -4,14 +4,13 @@
  * to write `try-catch` all the time.
  *
  */
-exports.catchErrors = action => (req, res, next) =>
-  action(req, res).catch(next);
+exports.catchErrors = action => (req, res, next) => action(req, res).catch(next);
 
 /**
  * Catch all invalid routes and pass it on to the error handler.
  */
 exports.invalidRoute = (req, res, next) => {
-  const error = new Error("Invalid route.");
+  const error = new Error('Invalid route.');
   error.status = 404;
   next(error);
 };
@@ -30,7 +29,7 @@ exports.validationErrors = (error, req, res, next) => {
   res.status(400).json({
     success: false,
     status: 400,
-    error: errors
+    error: errors,
   });
 };
 
@@ -43,19 +42,19 @@ exports.displayErrors = (error, req, res, next) => {
   const err = error;
   const status = err.status || 500;
   delete err.status;
-  err.message = err.message || "Something went wrong.";
+  err.message = err.message || 'Something went wrong.';
 
-  if (process.env.NODE_ENV === "production") {
+  if (process.env.NODE_ENV === 'production') {
     delete err.stack;
   } else {
-    err.stack = err.stack || "";
+    err.stack = err.stack || '';
   }
 
   res.status(status).json({
     success: false,
     status,
     error: {
-      message: err.message
-    }
+      message: err.message,
+    },
   });
 };

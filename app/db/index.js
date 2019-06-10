@@ -1,32 +1,11 @@
 const mongoose = require('mongoose');
-const uri = process.env.MONGODB_URI || 'mongodb://localhost/besbefore';
+
+const uri = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/bestbefore';
 
 module.exports = {
-    connect: async () => {
-        try {
-            await mongoose.connect(uri, { useNewUrlParser: true, useCreateIndex: true });
-        } catch (err) {
-            throw err;
-        }
-    },
+  connect: () => mongoose.connect(uri, { useNewUrlParser: true, useCreateIndex: true }),
 
-    close: async () => {
-        try {
-            await mongoose.disconnect();
-        } catch (err) {
-            throw err;
-        }
-    },
+  close: () => mongoose.disconnect(),
 
-    isConnected: () => {
-        return mongoose.connection.readyState === 1
-    },
-
-    dropModel: async (modelName) => {
-        try {
-            await models[modelName].deleteMany({});
-        } catch (err) {
-            throw err;
-        }
-    }
-}
+  isConnected: () => mongoose.connection.readyState === 1,
+};

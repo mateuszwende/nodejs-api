@@ -1,10 +1,8 @@
-"use strict";
+const express = require('express');
+const UserRoutes = require('./user');
+const customerRoutes = require('./customer');
 
-const express = require("express");
-const UserRoutes = require("./user");
-const customerRoutes = require("./customer");
-
-let router = express.Router();
+const router = express.Router();
 
 router.use(UserRoutes);
 router.use(customerRoutes);
