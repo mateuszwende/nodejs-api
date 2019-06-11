@@ -1,12 +1,4 @@
 const jwt = require('jsonwebtoken');
-// const passport = require('passport');
-
-// const LocalStrategy = require("passport-local").Strategy;
-
-// const passportSignIn = passport.authenticate("local", { session: false });
-// const passportJWT = passport.authenticate("jwt", { session: false });
-// const GooglePlusTokenStrategy = require("passport-google-plus-token");
-// const FacebookTokenStrategy = require("passport-facebook-token");
 
 module.exports = {
   jwtSign: async (payload) => {
