@@ -29,8 +29,6 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-debug('JWT SECRET', process.env.JWT_SECRET);
-
 // Init the passport middleware strategies
 passportConfig.init();
 

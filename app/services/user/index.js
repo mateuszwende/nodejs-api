@@ -8,10 +8,20 @@ module.exports = {
 
   getById: id => User.findById(id).exec(),
 
+  getByFacebookId: id => User.findOne({ 'facebook.id': id }).exec(),
+
   create: (email, password) => new User({
     methods: ['local'],
     email,
     password,
+  }),
+
+  createWithFacebook: (id, email) => new User({
+    methods: ['facebook'],
+    facebook: {
+      id,
+      email,
+    },
   }),
 
   save: user => user.save(),

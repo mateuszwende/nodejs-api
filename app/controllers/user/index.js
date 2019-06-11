@@ -39,6 +39,12 @@ module.exports = {
     return new ApiResult({ newUser, jwtToken }, 201);
   },
 
+  facebookOAuth: (user) => {
+    const jwtToken = authService.jwtSign(user);
+
+    return new ApiResult({ user, jwtToken }, 200);
+  },
+
   login: async (user) => {
     console.log('login user', user);
 

@@ -11,7 +11,6 @@ const UserSchema = new Schema(
     email: {
       type: String,
       unique: true,
-      required: [true, 'Email is required'],
       validate: {
         validator: validateEmail,
         message: 'The email is not valid',
@@ -19,10 +18,16 @@ const UserSchema = new Schema(
     },
     password: {
       type: String,
-      required: [true, 'Password is required'],
       validate: {
         validator: validatePassword,
         message: 'The password is not valid',
+      },
+    },
+    facebook: {
+      id: String,
+      email: {
+        type: String,
+        lowercase: true,
       },
     },
     emailToken: String,

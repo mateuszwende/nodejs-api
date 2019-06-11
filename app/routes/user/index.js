@@ -6,10 +6,11 @@ const { controllerHandler } = require('../../middlewares/controller-handler');
 
 const c = controllerHandler;
 
-const passportUsersLocal = passport.authenticate('local-users', {
+const passportLocalUsers = passport.authenticate('local-users', {
   session: false,
 });
-const passportUsersJWT = passport.authenticate('jwt-users', { session: false });
+const passportJWTUsers = passport.authenticate('jwt-users', { session: false });
+const facebookTokenUsers = passport.authenticate('facebook-token-users', { session: false });
 
 const router = express.Router();
 
@@ -20,13 +21,13 @@ router.post(
 
 router.post(
   '/users/login',
-  passportUsersLocal,
+  passportLocalUsers,
   c(UserController.login, (req, res, next) => [req.user]),
 );
 
 router.post(
   '/users/logout',
-  passportUsersJWT,
+  passportJWTUsers,
   c(UserController.logout, (req, res, next) => [req.params.id]),
 );
 
@@ -36,11 +37,11 @@ router.post(
 //   UserController.googleOAuth
 // );
 
-// router.post(
-//   "/users/facebook",
-//   passport.authenticate("facebookToken", { session: false }),
-//   UserController.facebookOAuth
-// );
+router.post(
+  '/users/oauth/facebook',
+  facebookTokenUsers,
+  c(UserController.facebookOAuth, (req, res, next) => [req.user]),
+);
 
 router.get('/users/verify', c(UserController.verifyEmail, (req, res, next) => [req.query.token]));
 

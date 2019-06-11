@@ -2,7 +2,7 @@ const passport = require('passport');
 const JwtStrategy = require('passport-jwt').Strategy;
 const FacebookTokenStrategy = require('passport-facebook-token');
 const LocalStrategy = require('passport-local').Strategy;
-
+const debug = require('debug')('auth-passport');
 const { ExtractJwt } = require('passport-jwt');
 
 const { UserService } = require('../../services');
@@ -10,9 +10,6 @@ const commonErrors = require('../../utils/errors/common');
 
 module.exports = {
   init: () => {
-    // JSON WEB TOKENS STRATEGY
-    console.log('INIT JWT SECRET', process.env.JWT_SECRET);
-
     passport.use(
       'jwt-users',
       new JwtStrategy(
@@ -47,9 +44,13 @@ module.exports = {
         {
           clientID: process.env.FACEBOOK_APP_ID,
           clientSecret: process.env.FACEBOOK_APP_SECRET,
-          passReqToCallback,
+          passReqToCallback: true,
         },
         async (req, accessToken, refreshToken, profile, done) => {
+          debug(accessToken);
+          debug(refreshToken);
+          debug(profile);
+
           try {
             if (req.user) {
               // Link accounts
@@ -83,13 +84,7 @@ module.exports = {
               return done(null, existingUser);
             }
 
-            const newUser = newUser({
-              methods: ['facebook'],
-              facebook: {
-                id: profile.id,
-                email: profile.emails[0].value,
-              },
-            });
+            const newUser = UserService.createWithFacebook(profile.id, profile.emails[0].value);
 
             await UserService.save(newUser);
             return done(null, newUser);
