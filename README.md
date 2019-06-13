@@ -27,7 +27,7 @@ An [Express](https://expressjs.com/) app that exposes a RESTful API for a single
 - [mongoose](http://mongoosejs.com/)
 - [body-parser](https://github.com/expressjs/body-parser)
 - [Helmet](https://github.com/helmetjs/helmet)
-- [Jest](https://mochajs.org/)
+- [Mocha](https://mochajs.org/)
 - [ESLint](https://github.com/eslint/eslint)
 - [nodemon](https://github.com/remy/nodemon)
 
