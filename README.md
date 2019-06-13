@@ -2,7 +2,7 @@
 
 [![Dependency Status](https://david-dm.org/mateuszwende/nodejs-api.svg)](https://david-dm.org/mateuszwende/nodejs-api)
 [![Coverage Status](https://coveralls.io/repos/github/mateuszwende/nodejs-api/badge.svg?branch=master)](https://coveralls.io/github/mateuszwende/nodejs-api?branch=master)
-[![Build Status](https://travis-ci.org/mateuszwende/node-js.svg?branch=master)](https://travis-ci.org/mateuszwende/nodejs-api)
+[![Build Status](https://travis-ci.org/mateuszwende/nodejs-api.svg?branch=master)](https://travis-ci.org/mateuszwende/nodejs-api)
 
 **Live Demo:** https://bb-backend-1.herokuapp.com/api/users
 
