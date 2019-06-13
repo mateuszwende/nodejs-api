@@ -1,6 +1,6 @@
 const { Schema, model } = require('mongoose');
 const bcrypt = require('bcrypt');
-const { validateEmail, validatePassword } = require('./validate');
+const validator = require('../../utils/validator');
 
 const UserSchema = new Schema(
   {
@@ -11,16 +11,19 @@ const UserSchema = new Schema(
     email: {
       type: String,
       unique: true,
+      required: [true, 'Email is required.'],
       validate: {
-        validator: validateEmail,
-        message: 'The email is not valid',
+        validator: validator.validateEmail,
+        message: 'Email is not valid',
       },
     },
     password: {
       type: String,
+      required: [true, 'Password is required.'],
       validate: {
-        validator: validatePassword,
-        message: 'The password is not valid',
+        validator: validator.validatePassword,
+        message:
+          'Password is not valid. It should contain 1 uppercase and lowercase alphabet, 2 digits, 1 special character and minimum length of 8 characters.',
       },
     },
     facebook: {
@@ -49,7 +52,7 @@ UserSchema.pre('save', async function (next) {
     if (!this.methods.includes('local')) {
       next();
     }
-    // check if the user has been modified to know if the password has already been hashed
+
     if (!this.isModified('password')) {
       next();
     }

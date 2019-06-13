@@ -9,6 +9,11 @@ module.exports = {
     error.status = 400;
     return error;
   },
+  notValidRoute: () => {
+    const error = new Error('The route is not valid.');
+    error.status = 404;
+    return error;
+  },
   notProvided: (name) => {
     const error = new Error(`${name} is not provided.`);
     error.status = 400;

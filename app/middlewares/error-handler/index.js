@@ -1,18 +1,10 @@
-/**
- * Catches all `async-await` errors from controller actions.
- * Each action is wrapped with `catchErrors` to avoid having
- * to write `try-catch` all the time.
- *
- */
-exports.catchErrors = action => (req, res, next) => action(req, res).catch(next);
+const commonErrors = require('../../utils/errors/common');
 
 /**
  * Catch all invalid routes and pass it on to the error handler.
  */
 exports.invalidRoute = (req, res, next) => {
-  const error = new Error('Invalid route.');
-  error.status = 404;
-  next(error);
+  next(commonErrors.notValidRoute());
 };
 
 /**

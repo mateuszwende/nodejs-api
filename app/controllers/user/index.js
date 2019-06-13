@@ -21,11 +21,11 @@ module.exports = {
 
     const jwtToken = await authService.jwtSign(newUser);
 
-    //   await sendMailService({
-    //     from: '"BestBefore" <matikkk2222@o2.pl>',
-    //     to: "matwende@gmail.com",
-    //     subject: "Hello ✔",
-    //     html: `<h4>Welcome on the board!</h4>
+    // await sendMailService({
+    //   from: '"BestBefore" <matikkk2222@o2.pl>',
+    //   to: 'matwende@gmail.com',
+    //   subject: 'Hello ✔',
+    //   html: `<h4>Welcome on the board!</h4>
     //   <p>Please verify your email by clicking on this link: <br/>
     //   <form method="POST" action="${process.env.URL}/api/user/verify"
 
@@ -33,8 +33,8 @@ module.exports = {
     //   </form>
     //   <a href="${process.env.URL}/api/user/verify?token=${secretToken}">
     //   ${process.env.URL}/api/user/verify?token=${secretToken}</a></p>
-    // `
-    //   });
+    // `,
+    // });
 
     return new ApiResult({ newUser, jwtToken }, 201);
   },
@@ -46,8 +46,6 @@ module.exports = {
   },
 
   login: async (user) => {
-    console.log('login user', user);
-
     if (!user) {
       throw commonErrors.notFound('User');
     }
