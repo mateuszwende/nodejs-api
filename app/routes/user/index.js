@@ -14,6 +14,7 @@ const facebookTokenUsers = passport.authenticate('facebook-token-users', { sessi
 
 const router = express.Router();
 
+/* eslint no-unused-vars: ["error", { "args": "none" }] */
 router.post(
   '/users/register',
   c(UserController.register, (req, res, next) => [req.body.email, req.body.password]),

@@ -19,7 +19,7 @@ const app = express();
 
 // Connect to mongo.
 db.connect()
-  .then(res => debug('Database connected successfully!'))
+  .then(() => debug('Database connected successfully!'))
   .catch(err => debug(err));
 
 app.use(helmet());

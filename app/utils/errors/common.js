@@ -21,12 +21,12 @@ module.exports = {
   },
   alreadyExists: (item) => {
     const error = new Error(`This ${item} already exists.`);
-    error.status = 403;
+    error.status = 400;
     return error;
   },
   alreadyVerified: (item) => {
     const error = new Error(`This ${item} is already verified.`);
-    error.status = 403;
+    error.status = 400;
     return error;
   },
   wrongCredentials: () => {
