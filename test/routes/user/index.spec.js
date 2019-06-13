@@ -6,7 +6,7 @@ const route = '/api/users';
 describe('UserRoutes', () => {
   describe(`GET ${route}`, async () => {
     it('it should get all the users (1)', async () => {
-      const user = await UserService.create(correctEmail, correctPassword);
+      const user = await UserService.create(goodEmail, goodPassword);
       await UserService.save(user);
 
       const res = await chai.request(server).get(`${route}`);
@@ -29,7 +29,7 @@ describe('UserRoutes', () => {
 
   describe(`GET ${route}/:id`, () => {
     it('it should get a user', async () => {
-      const user = await UserService.create(correctEmail, correctPassword);
+      const user = await UserService.create(goodEmail, goodPassword);
       await UserService.save(user);
 
       const res = await chai.request(server).get(`${route}/${user._id}`);
@@ -43,7 +43,7 @@ describe('UserRoutes', () => {
     });
 
     it("it should not get a user who doesn't exist", async () => {
-      const res = await chai.request(server).get(`${route}/${correctId}`);
+      const res = await chai.request(server).get(`${route}/${goodId}`);
 
       res.should.have.status(404);
       res.body.should.be.a('object');
@@ -55,8 +55,8 @@ describe('UserRoutes', () => {
   describe(`POST ${route}/register`, () => {
     it('it should register a new user', async () => {
       const user = {
-        email: correctEmail,
-        password: correctPassword,
+        email: goodEmail,
+        password: goodPassword,
       };
       const res = await chai
         .request(server)
@@ -75,7 +75,7 @@ describe('UserRoutes', () => {
 
     it('it should not register a new user without email', async () => {
       const user = {
-        password: correctPassword,
+        password: goodPassword,
       };
       const res = await chai
         .request(server)
@@ -94,7 +94,7 @@ describe('UserRoutes', () => {
     it('it should not register a new user with wrong email', async () => {
       const user = {
         email: badEmail,
-        password: correctPassword,
+        password: goodPassword,
       };
       const res = await chai
         .request(server)
@@ -112,7 +112,7 @@ describe('UserRoutes', () => {
 
     it('it should not register a new user with wrong password', async () => {
       const user = {
-        email: correctEmail,
+        email: goodEmail,
         password: badPassword,
       };
       const res = await chai
@@ -155,7 +155,7 @@ describe('UserRoutes', () => {
 
   describe(`GET ${route}/verify`, () => {
     it('it should verify a user', async () => {
-      const user = await UserService.create(correctEmail, correctPassword);
+      const user = await UserService.create(goodEmail, goodPassword);
       user.emailToken = UserService.generateEmailToken();
       await UserService.save(user);
 
@@ -173,7 +173,7 @@ describe('UserRoutes', () => {
       const res = await chai
         .request(server)
         .get(`${route}/verify`)
-        .query({ token: correctEmailToken });
+        .query({ token: goodEmailToken });
 
       res.should.have.status(404);
       res.body.should.be.a('object');
@@ -193,13 +193,13 @@ describe('UserRoutes', () => {
 
   describe(`POST ${route}/login`, () => {
     it('it should login an existing user', async () => {
-      const user = await UserService.create(correctEmail, correctPassword);
+      const user = await UserService.create(goodEmail, goodPassword);
       await UserService.save(user);
 
       const res = await chai
         .request(server)
         .post(`${route}/login`)
-        .send({ email: correctEmail, password: correctPassword });
+        .send({ email: goodEmail, password: goodPassword });
 
       res.should.have.status(200);
       res.body.should.be.a('object');
@@ -209,8 +209,8 @@ describe('UserRoutes', () => {
 
     it("it should not login user who doesn't exist", async () => {
       const user = {
-        email: correctEmail,
-        password: correctPassword,
+        email: goodEmail,
+        password: goodPassword,
       };
 
       const res = await chai
@@ -227,14 +227,14 @@ describe('UserRoutes', () => {
 
   describe(`PUT ${route}/update/:id`, () => {
     it('it should update an existing user', async () => {
-      const user = await UserService.create(correctEmail, correctPassword);
+      const user = await UserService.create(goodEmail, goodPassword);
       await UserService.save(user);
 
       const res = await chai
         .request(server)
         .put(`${route}/update/${user.id}`)
         .send({
-          params: { email: correctEmail, password: correctPassword },
+          params: { email: goodEmail, password: goodPassword },
         });
 
       res.should.have.status(200);
@@ -247,9 +247,9 @@ describe('UserRoutes', () => {
     it("it should not update user who doesn't exist", async () => {
       const res = await chai
         .request(server)
-        .put(`${route}/update/${correctId}`)
+        .put(`${route}/update/${goodId}`)
         .send({
-          params: { email: correctEmail, password: correctPassword },
+          params: { email: goodEmail, password: goodPassword },
         });
 
       res.should.have.status(404);
@@ -259,7 +259,7 @@ describe('UserRoutes', () => {
     });
 
     it('it should not update user when provided wrong email', async () => {
-      const user = await UserService.create(correctEmail, correctPassword);
+      const user = await UserService.create(goodEmail, goodPassword);
       await UserService.save(user);
 
       setTimeout(() => {}, 1000);
@@ -268,7 +268,7 @@ describe('UserRoutes', () => {
         .request(server)
         .put(`${route}/update/${user.id}`)
         .send({
-          params: { email: badEmail, password: correctPassword },
+          params: { email: badEmail, password: goodPassword },
         });
 
       res.should.have.status(400);
@@ -280,7 +280,7 @@ describe('UserRoutes', () => {
 
   describe(`POST ${route}/delete/:id`, () => {
     it('should delete an existing user', async () => {
-      const user = await UserService.create(correctEmail, correctPassword);
+      const user = await UserService.create(goodEmail, goodPassword);
       await UserService.save(user);
 
       const res = await chai.request(server).post(`${route}/delete/${user.id}`);
@@ -292,7 +292,7 @@ describe('UserRoutes', () => {
     });
 
     it("should not delete user who doesn't exist", async () => {
-      const res = await chai.request(server).post(`${route}/delete/${correctId}`);
+      const res = await chai.request(server).post(`${route}/delete/${goodId}`);
 
       res.should.have.status(400);
       res.body.should.be.a('object');

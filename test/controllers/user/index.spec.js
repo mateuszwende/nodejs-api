@@ -1,49 +1,46 @@
-const { UserController } = require("../../../app/controllers");
+const { UserController } = require('../../../app/controllers');
 
-describe("UserController", () => {
-  describe(".getAll()", () => {
-    it("it should get result with empty data and 200 status", async () => {
+describe('UserController', () => {
+  describe('.getAll()', () => {
+    it('it should get result with empty data and 200 status', async () => {
       try {
         const res = await UserController.getAll();
 
-        res.should.be.a("object");
-        res.should.have.property("status").eql(200);
-        res.should.have.property("data").to.be.empty;
+        res.should.be.a('object');
+        res.should.have.property('status').eql(200);
+        res.should.have.property('data').to.be.empty;
       } catch (err) {
         throw err;
       }
     });
   });
 
-  describe(".getOne()", () => {
-    it("it should get result with null data and 200 status", async () => {
+  describe('.getOne()', () => {
+    it('it should get result with null data and 200 status', async () => {
       try {
-        await UserController.getOne(correctId);
+        await UserController.getOne(goodId);
       } catch (err) {
         err.should.exist;
       }
     });
   });
 
-  describe(".register()", () => {
-    it("it should register a user getting result of data, jwtToken and status 201", async () => {
+  describe('.register()', () => {
+    it('it should register a user getting result of data, jwtToken and status 201', async () => {
       try {
-        const res = await UserController.register(
-          correctEmail,
-          correctPassword
-        );
+        const res = await UserController.register(goodEmail, goodPassword);
 
-        res.should.be.a("object");
-        res.should.have.property("status").eql(201);
-        res.should.have.property("data").to.have.property("newUser");
-        res.should.have.property("data").to.have.property("jwtToken");
+        res.should.be.a('object');
+        res.should.have.property('status').eql(201);
+        res.should.have.property('data').to.have.property('newUser');
+        res.should.have.property('data').to.have.property('jwtToken');
       } catch (err) {
         throw err;
       }
     });
   });
 
-  describe(".login()", () => {
+  describe('.login()', () => {
     it("it should not login a user who doesn't exist", async () => {
       try {
         await UserController.login(null);
@@ -53,19 +50,19 @@ describe("UserController", () => {
     });
   });
 
-  describe(".logout()", () => {
-    it("it should send message when logging out", async () => {
+  describe('.logout()', () => {
+    it('it should send message when logging out', async () => {
       try {
         res = await UserController.logout();
-        res.should.have.property("status").eql(200);
-        res.should.have.property("success").eql(true);
+        res.should.have.property('status').eql(200);
+        res.should.have.property('success').eql(true);
       } catch (err) {
         throw err;
       }
     });
   });
 
-  describe(".verifyEmail()", () => {
+  describe('.verifyEmail()', () => {
     it("it should not verify email of a user who doesn't exist", async () => {
       try {
         await UserController.verifyEmail();
@@ -75,20 +72,20 @@ describe("UserController", () => {
     });
   });
 
-  describe(".update()", () => {
+  describe('.update()', () => {
     it("it should not update a user who doesn't exist", async () => {
       try {
-        await UserController.update(correctId, { email: correctEmail });
+        await UserController.update(goodId, { email: goodEmail });
       } catch (err) {
         err.should.exist;
       }
     });
   });
 
-  describe(".delete()", () => {
+  describe('.delete()', () => {
     it("it should not delete a user who doesn't exist", async () => {
       try {
-        await UserController.delete(correctId);
+        await UserController.delete(goodId);
       } catch (err) {
         err.should.exist;
       }

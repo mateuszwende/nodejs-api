@@ -15,7 +15,7 @@ describe('UserService', () => {
 
   describe('.gerById()', () => {
     it('it should not get user as null', async () => {
-      const user = await UserService.getById(correctId);
+      const user = await UserService.getById(goodId);
 
       should.not.exist(user);
     });
@@ -23,7 +23,7 @@ describe('UserService', () => {
 
   describe('.getByEmail()', () => {
     it('it should get user as null', async () => {
-      const user = await UserService.getByEmail(correctEmail);
+      const user = await UserService.getByEmail(goodEmail);
 
       should.not.exist(user);
     });
@@ -31,7 +31,7 @@ describe('UserService', () => {
 
   describe('.create()', () => {
     it('it should create a new user', async () => {
-      const user = await UserService.create(correctEmail, correctPassword);
+      const user = await UserService.create(goodEmail, goodPassword);
 
       should.exist(user);
     });
@@ -41,8 +41,8 @@ describe('UserService', () => {
     it('it should save a user', async () => {
       const user = new User({
         methods: ['local'],
-        email: correctEmail,
-        password: correctPassword,
+        email: goodEmail,
+        password: goodPassword,
       });
 
       const savedUser = await UserService.save(user);
@@ -55,7 +55,7 @@ describe('UserService', () => {
       const user = new User({
         methods: ['local'],
         email: badEmail,
-        password: correctPassword,
+        password: goodPassword,
       });
 
       try {
@@ -68,7 +68,7 @@ describe('UserService', () => {
     it('it should not save a user with wrong password', async () => {
       const user = new User({
         methods: ['local'],
-        email: correctEmail,
+        email: goodEmail,
         password: badPassword,
       });
 
@@ -109,7 +109,7 @@ describe('UserService', () => {
   describe('.delete()', () => {
     it("it should not delete a user which doesn't exist", async () => {
       try {
-        await UserService.delete(correctId);
+        await UserService.delete(goodId);
       } catch (err) {
         err.should.exist;
       }
