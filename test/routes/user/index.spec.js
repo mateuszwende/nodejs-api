@@ -44,7 +44,6 @@ describe('UserRoutes', () => {
 
     it("it should not get a user who doesn't exist", async () => {
       const res = await chai.request(server).get(`${route}/${correctId}`);
-      console.log(res.body);
 
       res.should.have.status(404);
       res.body.should.be.a('object');
@@ -168,7 +167,6 @@ describe('UserRoutes', () => {
       res.should.have.status(200);
       res.body.should.be.a('object');
       res.body.should.have.property('status').eql(200);
-      // res.body.should.have.property("message").to.have.property("message");
     });
 
     it("it should not verify a user who doesn't exist", async () => {
