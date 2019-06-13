@@ -1,7 +1,7 @@
 const { sendMailService } = require('../../../app/services/mailer');
 
 describe('MAILER', function() {
-    it('should send email', async () => {
+    it.skip('should send email', async () => {
         let res;
         const secretToken = 'asd2fwdsgveg25r';
         try {
