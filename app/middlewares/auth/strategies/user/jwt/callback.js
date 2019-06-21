@@ -1,5 +1,5 @@
 const { UserService } = require('../../../../../services');
-const commonErrors = require('../../../../../utils/errors/common');
+const errors = require('../../../../../utils/errors');
 
 module.exports = async (req, payload, done) => {
   try {
@@ -8,7 +8,7 @@ module.exports = async (req, payload, done) => {
 
     // If user doesn't exists, handle it
     if (!user) {
-      return done(commonErrors.unauthorized(), false);
+      return done(errors.unauthorized(), false);
     }
 
     // Otherwise, return the user

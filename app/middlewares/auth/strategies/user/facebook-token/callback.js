@@ -1,5 +1,5 @@
 const { UserService } = require('../../../../../services');
-const commonErrors = require('../../../../../utils/errors/common');
+const errors = require('../../../../../utils/errors');
 
 module.exports = async (req, accessToken, refreshToken, profile, done) => {
   try {
@@ -12,7 +12,7 @@ module.exports = async (req, accessToken, refreshToken, profile, done) => {
       id = profile.id;
       email = profile.emails[0].value;
     } else {
-      throw commonErrors.notProvided('Facebook profile');
+      throw errors.notProvided('Facebook profile');
     }
 
     if (user) {

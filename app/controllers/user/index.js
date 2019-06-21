@@ -3,20 +3,20 @@ const { UserService } = require('../../services');
 const authService = require('../../services/auth');
 
 const ApiResult = require('../../utils/ApiResult');
-const commonErrors = require('../../utils/errors/common');
+const errors = require('../../utils/errors');
 
 module.exports = {
   register: async (email, password) => {
     if (!email) {
-      throw commonErrors.isRequired('Email');
+      throw errors.isRequired('Email');
     } else if (!password) {
-      throw commonErrors.isRequired('Password');
+      throw errors.isRequired('Password');
     }
 
     const user = await UserService.getByEmail(email);
 
     if (user) {
-      throw commonErrors.alreadyExists('User');
+      throw errors.alreadyExists('User');
     }
 
     const newUser = await UserService.create(email, password);
@@ -25,7 +25,7 @@ module.exports = {
 
     await UserService.save(newUser);
 
-    const jwtToken = await authService.jwtSign(newUser);
+    const jwtToken = await authService.jwtSign(newUser.id);
 
     // await sendMailService({
     //   from: '"BestBefore" <matikkk2222@o2.pl>',
@@ -46,17 +46,17 @@ module.exports = {
   },
 
   facebookOAuth: (user) => {
-    const jwtToken = authService.jwtSign(user);
+    const jwtToken = authService.jwtSign(user.id);
 
     return new ApiResult({ user, jwtToken }, 200);
   },
 
   login: async (user) => {
     if (!user) {
-      throw commonErrors.notFound('User');
+      throw errors.notFound('User');
     }
 
-    const token = await authService.jwtSign(user);
+    const token = await authService.jwtSign(user.id);
 
     return new ApiResult({ token }, 200);
   },
@@ -65,15 +65,15 @@ module.exports = {
 
   verifyEmail: async (token) => {
     if (!token) {
-      throw commonErrors.notProvided('Token');
+      throw errors.notProvided('Token');
     }
 
     const user = await UserService.verifyEmail(token);
 
     if (!user) {
-      throw commonErrors.notFound('User');
+      throw errors.notFound('User');
     } else if (user.isVerified) {
-      throw commonErrors.alreadyVerified('User');
+      throw errors.alreadyVerified('User');
     }
 
     user.isVerified = true;
@@ -91,7 +91,7 @@ module.exports = {
     const user = await UserService.getById(id);
 
     if (!user) {
-      throw commonErrors.notFound('User');
+      throw errors.notFound('User');
     }
 
     return new ApiResult(user, 200);
@@ -101,7 +101,7 @@ module.exports = {
     const user = await UserService.getById(id);
 
     if (!user) {
-      throw commonErrors.notFound('User');
+      throw errors.notFound('User');
     }
 
     // // TODO: Change to function
@@ -118,7 +118,7 @@ module.exports = {
     const success = await UserService.delete(id);
 
     if (!success) {
-      throw commonErrors.deleteFail('User');
+      throw errors.deleteFail('User');
     }
 
     return new ApiResult(null, 200);

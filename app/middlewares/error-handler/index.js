@@ -1,10 +1,10 @@
-const commonErrors = require('../../utils/errors/common');
+const errors = require('../../utils/errors');
 
 /**
  * Catch all invalid routes and pass it on to the error handler.
  */
 exports.invalidRoute = (req, res, next) => {
-  next(commonErrors.notValidRoute());
+  next(errors.notValidRoute());
 };
 
 /**

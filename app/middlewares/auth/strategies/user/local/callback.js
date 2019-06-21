@@ -1,12 +1,12 @@
 const { UserService } = require('../../../../../services');
-const commonErrors = require('../../../../../utils/errors/common');
+const errors = require('../../../../../utils/errors');
 
 module.exports = async (email, password, done) => {
   try {
     const user = await UserService.getByEmail(email);
 
     if (!user) {
-      return done(commonErrors.notFound('User'), false);
+      return done(errors.notFound('User'), false);
     }
 
     const isMatch = await user.checkPassword(password);
