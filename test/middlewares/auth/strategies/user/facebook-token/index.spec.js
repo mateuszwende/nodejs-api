@@ -3,8 +3,6 @@ const {
 } = require('../../../../../../app/middlewares/auth/strategies/user/facebook-token');
 const { UserService } = require('../../../../../../app/services');
 
-chai.use(require('chai-passport-strategy'));
-
 describe('FACEBOOK TOKEN STRATEGY', () => {
   // callback of the strategy callback
   const done = (err, user) => {
