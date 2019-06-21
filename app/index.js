@@ -1,4 +1,10 @@
 require('dotenv').config();
+
+// Set special __require fn to return the absolute path of an app
+// global.__require = filePath => require(`${__dirname}/${filePath}`);
+
+// console.log(__require('utils/validator'));
+
 const debug = require('debug')('app-index');
 const express = require('express');
 const bodyParser = require('body-parser');

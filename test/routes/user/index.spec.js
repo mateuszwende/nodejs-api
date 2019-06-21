@@ -73,6 +73,21 @@ describe('UserRoutes', () => {
       res.body.data.should.have.property('jwtToken');
     });
 
+    it('it should not register a new user when the user already exist', async () => {
+      const user = UserService.create(goodEmail, goodPassword);
+      await UserService.save(user);
+
+      const res = await chai
+        .request(server)
+        .post(`${route}/register`)
+        .send(user);
+
+      res.should.have.status(400);
+      res.body.should.be.a('object');
+      res.body.should.have.property('status').eql(400);
+      res.body.should.have.property('error').to.have.property('message');
+    });
+
     it('it should not register a new user without email', async () => {
       const user = {
         password: goodPassword,
@@ -85,10 +100,22 @@ describe('UserRoutes', () => {
       res.should.have.status(400);
       res.body.should.be.a('object');
       res.body.should.have.property('status').eql(400);
-      res.body.should.have
-        .property('error')
-        .to.have.property('email')
-        .to.have.property('message');
+      res.body.should.have.property('error').to.have.property('message');
+    });
+
+    it('it should not register a new user without password', async () => {
+      const user = {
+        email: goodEmail,
+      };
+      const res = await chai
+        .request(server)
+        .post(`${route}/register`)
+        .send(user);
+
+      res.should.have.status(400);
+      res.body.should.be.a('object');
+      res.body.should.have.property('status').eql(400);
+      res.body.should.have.property('error').to.have.property('message');
     });
 
     it('it should not register a new user with wrong email', async () => {

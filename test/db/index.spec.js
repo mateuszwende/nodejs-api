@@ -14,7 +14,7 @@ describe('DATABASE', () => {
 
   after(async () => {
     try {
-      if (mongoose.connection.readyState === 3) {
+      if (mongoose.connection.readyState === 0) {
         await db.connect();
       }
     } catch (err) {

@@ -7,6 +7,12 @@ const commonErrors = require('../../utils/errors/common');
 
 module.exports = {
   register: async (email, password) => {
+    if (!email) {
+      throw commonErrors.isRequired('Email');
+    } else if (!password) {
+      throw commonErrors.isRequired('Password');
+    }
+
     const user = await UserService.getByEmail(email);
 
     if (user) {

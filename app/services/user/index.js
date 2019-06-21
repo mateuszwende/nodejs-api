@@ -24,11 +24,22 @@ module.exports = {
     },
   }),
 
+  linkWithFacebook: (user, id, email) => {
+    user.methods.push('facebook');
+    user.facebook = {
+      id,
+      email,
+    };
+    user.save();
+
+    return user;
+  },
+
   save: user => user.save(),
 
   verifyEmail: token => User.findOne({ emailToken: token }).exec(),
 
-  delete: async id => User.findByIdAndDelete(id).exec(),
+  delete: id => User.findByIdAndDelete(id).exec(),
 
   generateEmailToken: () => randomstring.generate(),
 };

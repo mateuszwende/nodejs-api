@@ -39,4 +39,14 @@ module.exports = {
     error.status = 400;
     return error;
   },
+  isRequired: (item) => {
+    const error = new Error(`${item} is required.`);
+    error.status = 400;
+    return error;
+  },
+  unauthorized: () => {
+    const error = new Error('You are unauthorized to view this data.');
+    error.status = 403;
+    return error;
+  },
 };

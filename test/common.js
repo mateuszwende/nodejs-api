@@ -17,6 +17,7 @@ describe('API TESTS', () => {
   require('./models/index.spec.js');
   require('./services/index.spec.js');
   require('./controllers/index.spec.js');
+  require('./middlewares/index.spec.js');
   require('./routes/index.spec.js');
 
   after(() => {

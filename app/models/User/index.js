@@ -11,7 +11,6 @@ const UserSchema = new Schema(
     email: {
       type: String,
       unique: true,
-      required: [true, 'Email is required.'],
       validate: {
         validator: validator.validateEmail,
         message: 'Email is not valid',
@@ -19,7 +18,6 @@ const UserSchema = new Schema(
     },
     password: {
       type: String,
-      required: [true, 'Password is required.'],
       validate: {
         validator: validator.validatePassword,
         message:
