@@ -188,7 +188,7 @@ describe('UserRoutes', () => {
 
       const res = await chai
         .request(server)
-        .get(`${route}/verify`)
+        .get(`${route}/verify-email`)
         .query({ token: user.emailToken });
 
       res.should.have.status(200);
