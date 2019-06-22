@@ -1,5 +1,4 @@
-const { UserService } = require('../../services');
-const authService = require('../../services/auth');
+const { AuthService, UserService, VerificationTokenService } = require('../../services');
 const { sendVerificationTokenEmail } = require('../../modules/smtp-transporter');
 const ApiResult = require('../../utils/ApiResult');
 const errors = require('../../utils/errors');
@@ -20,20 +19,23 @@ module.exports = {
 
     // User creation process
     const newUser = await UserService.create(email, password);
-    newUser.emailToken = UserService.generateEmailToken();
     await UserService.save(newUser);
 
+    // Verification token process
+    verificationToken = await VerificationTokenService.create(newUser.id);
+    await VerificationTokenService.save(verificationToken);
+
     // Send verification token
-    await sendVerificationTokenEmail(newUser.email, newUser.emailToken);
+    await sendVerificationTokenEmail(newUser.email, verificationToken.token);
 
     // Create jwt token
-    const jwtToken = await authService.jwtSign(newUser.id);
+    const jwtToken = await AuthService.jwtSign(newUser.id);
 
     return new ApiResult({ newUser, jwtToken }, 201);
   },
 
   facebookOAuth: (user) => {
-    const jwtToken = authService.jwtSign(user.id);
+    const jwtToken = AuthService.jwtSign(user.id);
 
     return new ApiResult({ user, jwtToken }, 200);
   },
@@ -43,19 +45,27 @@ module.exports = {
       throw errors.notFound('User');
     }
 
-    const token = await authService.jwtSign(user.id);
+    const jwtToken = await AuthService.jwtSign(user.id);
 
-    return new ApiResult({ token }, 200);
+    return new ApiResult({ jwtToken }, 200);
   },
 
   logout: async () => new ApiResult(null, 200),
 
   verifyEmail: async (token) => {
     if (!token) {
-      throw errors.notProvided('Token');
+      throw errors.notProvided('Verification token');
     }
 
-    const user = await UserService.verifyEmail(token);
+    // Find token
+    const verificationToken = await VerificationTokenService.getByToken(token);
+
+    if (!verificationToken) {
+      throw errors.notFound('Verification token');
+    }
+
+    // Find user
+    const user = await UserService.getById(verificationToken.userId);
 
     if (!user) {
       throw errors.notFound('User');

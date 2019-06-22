@@ -1,4 +1,3 @@
-const randomstring = require('randomstring');
 const User = require('../../models/User');
 
 module.exports = {
@@ -40,6 +39,4 @@ module.exports = {
   verifyEmail: token => User.findOne({ emailToken: token }).exec(),
 
   delete: id => User.findByIdAndDelete(id).exec(),
-
-  generateEmailToken: () => randomstring.generate(),
 };

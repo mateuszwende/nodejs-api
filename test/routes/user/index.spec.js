@@ -1,5 +1,4 @@
-const { UserService } = require('../../../app/services');
-const authService = require('../../../app/services/auth');
+const { UserService, VerificationTokenService } = require('../../../app/services');
 
 const route = '/api/users';
 
@@ -183,13 +182,15 @@ describe('UserRoutes', () => {
   describe(`GET ${route}/verify-email`, () => {
     it('it should verify a user', async () => {
       const user = await UserService.create(goodEmail, goodPassword);
-      user.emailToken = UserService.generateEmailToken();
       await UserService.save(user);
+
+      verificationToken = VerificationTokenService.create(user.id);
+      await VerificationTokenService.save(verificationToken);
 
       const res = await chai
         .request(server)
         .get(`${route}/verify-email`)
-        .query({ token: user.emailToken });
+        .query({ token: verificationToken.token });
 
       res.should.have.status(200);
       res.body.should.be.a('object');
@@ -231,7 +232,7 @@ describe('UserRoutes', () => {
       res.should.have.status(200);
       res.body.should.be.a('object');
       res.body.should.have.property('status').eql(200);
-      res.body.should.have.property('data').to.have.property('token');
+      res.body.should.have.property('data').to.have.property('jwtToken');
     });
 
     it("it should not login user who doesn't exist", async () => {

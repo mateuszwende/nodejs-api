@@ -47,10 +47,12 @@ const UserSchema = new Schema(
 
 UserSchema.pre('save', async function (next) {
   try {
+    // methods other than local have different strategies
     if (!this.methods.includes('local')) {
       next();
     }
 
+    // if password not modified leave with the same hash
     if (!this.isModified('password')) {
       next();
     }
