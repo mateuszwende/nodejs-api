@@ -16,9 +16,8 @@ An [Express](https://expressjs.com/) app that exposes a RESTful API for a single
 - Linting with [ESLint](http://eslint.org/).
 - Conforms to [Airbnb's JavaScript Style Guide](https://github.com/airbnb/javascript).
 - Testing with [Mocha](https://mochajs.org/).
-  - Continuous Integration (CI) with [Travis CI](https://travis-ci.org/). (see below).
+  - Continuous Integration (CI) with [Travis CI](https://travis-ci.org/).
   - Code coverage with [Coveralls](https://coveralls.io/github/mateuszwende/nodejs-api).
-- Model–view–controller (MVC) architectural pattern.
 - Heroku/Dokku support.
 
 ### Core Libraries/Modules
@@ -35,16 +34,21 @@ An [Express](https://expressjs.com/) app that exposes a RESTful API for a single
 
 **Note**: All endpoints are relative to `/api`, unless otherwise noted.
 
-| HTTP Method | URL                 | Description              |
-| :---------: | :------------------ | :----------------------- |
-|    `GET`    | `/users`            | Returns a list of users. |
-|    `GET`    | `/users/:id`        | Returns a user.          |
-|   `POST`    | `/users/register`   | Creates a new user.      |
-|  `DELETE`   | `/users/delete/:id` | Deletes a user.          |
-|  `UPDATE`   | `/users/update/:id` | Updates a user.          |
+| HTTP Method | URL                          | Description               |
+| :---------: | :--------------------------- | :------------------------ |
+|    `GET`    | `/users`                     | Returns a list of users.  |
+|    `GET`    | `/users/:id`                 | Returns a user.           |
+|   `POST`    | `/users/register`            | Creates a new user.       |
+|  `DELETE`   | `/users/delete/:id`          | Deletes a user.           |
+|    `PUT`    | `/users/update/:id`          | Updates a user.           |
+|    `GET`    | `/users/verify-email/:token` | Verify a user's email.    |
+|   `POST`    | `/users/login`               | Login a user.             |
+|   `POST`    | `/users/logout/:id`          | Logout a user.            |
+|   `POST`    | `/users/oauth/facebook`      | Auth a user via facebook. |
 
 ## Prerequisites
 
+- [Git](https://git-scm.com/)
 - [MongoDB](https://www.mongodb.com/download-center)
 - [Node.js 10.x](https://nodejs.org/)
 
@@ -60,7 +64,7 @@ npm install
 
 ```
 
-This project makes use of [dotenv](https://www.npmjs.com/package/dotenv) module for injecting environment variables while developing. Be sure to create a copy of the provided `.env.example` and name it `.env`.
+This project makes use of [dotenv](https://www.npmjs.com/package/dotenv) module for injecting environment variables while developing. Be sure to create a copy of the provided `.env.example`, name it `.env` and provide necessary values's replacement.
 
 ```bash
 # Run app in dev mode
@@ -71,7 +75,7 @@ npm run dev
 
 Simply execute the test script which run all the tests and generate code coverage.
 
-**Note**: Ensure you have MongoDB running. Ideally MongoDB and mongoose should be mocked, but they're not.
+**Note**: Ensure you have MongoDB running.
 
 ```bash
 # Run tests and generate coverage
