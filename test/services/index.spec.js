@@ -6,6 +6,5 @@ describe('SERVICES', () => {
   });
 
   require('./auth/index.spec');
-  require('./mailer/index.spec');
   require('./user/index.spec');
 });

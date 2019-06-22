@@ -1,7 +1,6 @@
 const { UserService } = require('../../services');
-// const { sendMailService } = require('../../services/mailer');
 const authService = require('../../services/auth');
-
+const { sendVerificationTokenEmail } = require('../../modules/smtp-transporter');
 const ApiResult = require('../../utils/ApiResult');
 const errors = require('../../utils/errors');
 
@@ -19,28 +18,16 @@ module.exports = {
       throw errors.alreadyExists('User');
     }
 
+    // User creation process
     const newUser = await UserService.create(email, password);
-
     newUser.emailToken = UserService.generateEmailToken();
-
     await UserService.save(newUser);
 
+    // Send verification token
+    await sendVerificationTokenEmail(newUser.email, newUser.emailToken);
+
+    // Create jwt token
     const jwtToken = await authService.jwtSign(newUser.id);
-
-    // await sendMailService({
-    //   from: '"BestBefore" <matikkk2222@o2.pl>',
-    //   to: 'matwende@gmail.com',
-    //   subject: 'Hello ✔',
-    //   html: `<h4>Welcome on the board!</h4>
-    //   <p>Please verify your email by clicking on this link: <br/>
-    //   <form method="POST" action="${process.env.URL}/api/user/verify"
-
-    //   <button type="submit">Verify</button>
-    //   </form>
-    //   <a href="${process.env.URL}/api/user/verify?token=${secretToken}">
-    //   ${process.env.URL}/api/user/verify?token=${secretToken}</a></p>
-    // `,
-    // });
 
     return new ApiResult({ newUser, jwtToken }, 201);
   },
