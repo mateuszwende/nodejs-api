@@ -1,4 +1,5 @@
 const User = require('../../models/User');
+const errors = require('../../utils/errors');
 
 module.exports = {
   getAll: () => User.find({}).exec(),
@@ -29,9 +30,19 @@ module.exports = {
       id,
       email,
     };
-    user.save();
 
-    return user;
+    return user.save();
+  },
+
+  update: (user, params) => {
+    Object.keys(params).forEach((param) => {
+      if (!user[param]) {
+        throw errors.notValid(`${param} parameter`);
+      }
+      user[param] = params[param];
+    });
+
+    return user.save();
   },
 
   save: user => user.save(),

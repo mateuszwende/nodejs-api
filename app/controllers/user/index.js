@@ -94,19 +94,18 @@ module.exports = {
     return new ApiResult(user, 200);
   },
 
-  update: async (id, params) => {
+  update: async (id, bodyParams) => {
+    if (!bodyParams) {
+      throw errors.notProvided("User's parameters");
+    }
+
     const user = await UserService.getById(id);
 
     if (!user) {
       throw errors.notFound('User');
     }
 
-    // // TODO: Change to function
-    Object.keys(params).forEach((param) => {
-      user[param] = params[param];
-    });
-
-    const updatedUser = await UserService.save(user);
+    const updatedUser = await UserService.update(user, bodyParams);
 
     return new ApiResult(updatedUser, 200);
   },
