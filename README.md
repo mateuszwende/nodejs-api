@@ -41,7 +41,7 @@ An [Express](https://expressjs.com/) app that exposes a RESTful API for a single
 |   `POST`    | `/users/register`            | Creates a new user.       |
 |  `DELETE`   | `/users/delete/:id`          | Deletes a user.           |
 |    `PUT`    | `/users/update/:id`          | Updates a user.           |
-|    `GET`    | `/users/verify-email/:token` | Verify a user's email.    |
+|    `PUT`    | `/users/verify-email/:token` | Verify a user's email.    |
 |   `POST`    | `/users/login`               | Login a user.             |
 |   `POST`    | `/users/logout/:id`          | Logout a user.            |
 |   `POST`    | `/users/oauth/facebook`      | Auth a user via facebook. |

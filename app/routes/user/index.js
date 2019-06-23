@@ -44,7 +44,7 @@ router.post(
   c(UserController.facebookOAuth, (req, res, next) => [req.user]),
 );
 
-router.get(
+router.put(
   '/users/verify-email',
   c(UserController.verifyEmail, (req, res, next) => [req.query.token]),
 );

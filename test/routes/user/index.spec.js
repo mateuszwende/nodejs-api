@@ -179,7 +179,7 @@ describe('UserRoutes', () => {
     });
   });
 
-  describe(`GET ${route}/verify-email`, () => {
+  describe(`PUT ${route}/verify-email`, () => {
     it('it should verify a user', async () => {
       const user = await UserService.create(goodEmail, goodPassword);
       await UserService.save(user);
@@ -189,7 +189,7 @@ describe('UserRoutes', () => {
 
       const res = await chai
         .request(server)
-        .get(`${route}/verify-email`)
+        .put(`${route}/verify-email`)
         .query({ token: verificationToken.token });
 
       res.should.have.status(200);
@@ -200,7 +200,7 @@ describe('UserRoutes', () => {
     it("it should not verify a user who doesn't exist", async () => {
       const res = await chai
         .request(server)
-        .get(`${route}/verify-email`)
+        .put(`${route}/verify-email`)
         .query({ token: goodEmailToken });
 
       res.should.have.status(404);
@@ -210,7 +210,7 @@ describe('UserRoutes', () => {
     });
 
     it('it should not verify a new user without token', async () => {
-      const res = await chai.request(server).get(`${route}/verify-email`);
+      const res = await chai.request(server).put(`${route}/verify-email`);
 
       res.should.have.status(400);
       res.body.should.be.a('object');
