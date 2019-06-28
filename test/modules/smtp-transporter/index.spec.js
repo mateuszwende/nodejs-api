@@ -2,7 +2,7 @@ const smtpTransporter = require('../../../app/modules/smtp-transporter');
 
 describe('SMTP Transporter', () => {
   it('should send an email without errors', async () => {
-    const email = 'matwende@gmail.com';
+    const email = goodEmail;
     const token = 'exampleToken';
 
     try {
@@ -15,8 +15,8 @@ describe('SMTP Transporter', () => {
     }
   });
 
-  it('should send an email from proper email', async () => {
-    const email = 'matwende@gmail.com';
+  it('should send an email from proper email account', async () => {
+    const email = goodEmail;
     const token = 'exampleToken';
 
     try {
@@ -29,8 +29,8 @@ describe('SMTP Transporter', () => {
     }
   });
 
-  it('should send an email to proper email', async () => {
-    const email = 'matwende@gmail.com';
+  it('should send an email to proper email account', async () => {
+    const email = goodEmail;
     const token = 'exampleToken';
 
     try {

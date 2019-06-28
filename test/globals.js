@@ -13,7 +13,7 @@ global.should = chai.should();
 global.server = require('../bin/www');
 
 global.goodPassword = 'asdAAS2#1w$%';
-global.goodEmail = 'qwerty@ewq.com';
+global.goodEmail = 'matikkk2222@tlen.pl';
 global.badPassword = 'dsaqwe1s';
 global.badEmail = 'qwertyqwe.com';
 global.goodId = '5cf59e882ea3c36d4d0f631f';
